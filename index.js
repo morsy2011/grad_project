@@ -2,6 +2,9 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
+const helmet = require('helmet');
+const morgan = require('morgan');
+const logging = require('./middleware/logger');
 const courses = require('./routes/courses');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
@@ -15,9 +18,14 @@ mongoose.connect('mongodb+srv://morsy:morsy2011@cluster0.eaohx.mongodb.net/myFir
   .catch(err => logger.error('Error connected to MongoDB..',err));
 
 app.use(express.json());
+app.use(helmet());
 app.use('/api/courses', courses);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 
+if (app.get('env') === 'development') {
+  app.use(logging);
+  app.use(morgan('tiny'));
+}
 
 app.listen(port, ()=> console.log(`Listening on port ${port}`));
