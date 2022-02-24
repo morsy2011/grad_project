@@ -13,7 +13,7 @@ const logger = winston.createLogger({
     new winston.transports.MongoDB({
       level: 'error',
       options: { useUnifiedTopology: true },
-      db: 'mongodb://localhost/courses'
+      db: 'mongodb+srv://morsy:morsy2011@cluster0.eaohx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
     })
   ]
 });

@@ -8,7 +8,7 @@ const auth = require('./routes/auth');
 const logger = require('./config/logger')
 const PORT = process.env.PORT ||5000;
 
-mongoose.connect('mongodb://localhost/courses',{
+mongoose.connect('mongodb+srv://morsy:morsy2011@cluster0.eaohx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true
   })
   .then(() => console.log('Connected to MongoDB..'))
