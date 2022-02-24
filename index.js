@@ -6,7 +6,7 @@ const courses = require('./routes/courses');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
 const logger = require('./config/logger')
-const PORT = process.env.PORT ||5000;
+const port = process.env.PORT ||5000;
 
 mongoose.connect('mongodb+srv://morsy:morsy2011@cluster0.eaohx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true
@@ -20,4 +20,4 @@ app.use('/api/users', users);
 app.use('/api/auth', auth);
 
 
-app.listen(PORT, ()=> console.log(`Listening on port ${PORT}`));
+app.listen(port, ()=> console.log(`Listening on port ${port}`));
