@@ -1,11 +1,10 @@
 const express = require('express');
-const router = express.Router();
 const mongoose = require('mongoose');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const { User, validateUser } = require('../models/user');
 
-router.post('/', async (req, res) =>{
+exports.sinUp =  async (req, res, next) =>{
   const { error } = validateUser(req.body);
   if(error) return res.status(404).send(error.details[0].message);
 
@@ -19,12 +18,12 @@ router.post('/', async (req, res) =>{
 
   const token = user.generateAuthToken();
   res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']));
+  next();
+};
 
-});
-
-router.get('/', async (req, res) => {
+exports.showUsers = async (req, res, next) => {
   const user = await User.find().sort('name').select('-password');
   res.send(user);
-});
+  next();
+};
 
-module.exports = router;
