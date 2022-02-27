@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
   res.send(user);
 });
 
-router.get('/:email', async (req, res) => {
+router.get('/email', async (req, res) => {
   const user = await User.findByEmail(req.params.email).select('-password');
   if (!user) return res.status(404).send('This user not found!');
   res.send(user);
