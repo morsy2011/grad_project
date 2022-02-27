@@ -23,7 +23,7 @@ router.post('/', async (req, res) =>{
 });
 
 router.get('/', async (req, res) => {
-  const user = await User.find().sort('name');
+  const user = await User.find().sort('name -password');
   res.send(user);
 });
 
