@@ -1,5 +1,5 @@
 const winston = require('winston');
-require('winston-mongodb');
+// require('winston-mongodb');
 
 const logger = winston.createLogger({
   level: 'info',
@@ -10,11 +10,11 @@ const logger = winston.createLogger({
       level: 'error',
       format: winston.format.combine(winston.format.timestamp(), winston.format.json())
     }),
-    new winston.transports.MongoDB({
-      level: 'error',
-      options: { useUnifiedTopology: true },
-      db: 'mongodb+srv://morsy:morsy2011@cluster0.eaohx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-    })
+    // new winston.transports.MongoDB({
+    //   level: 'error',
+    //   options: { useUnifiedTopology: true },
+    //   db: 'mongodb+srv://morsy:morsy2011@cluster0.eaohx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+    // })
   ]
 });
 
