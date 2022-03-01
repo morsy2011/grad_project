@@ -1,5 +1,5 @@
+const Joi = require("joi");
 const express = require('express');
-const Joi = require('Joi');
 const _ = require('lodash');
 const mongoose = require('mongoose');
 const { Tourist, validate } = require('../models/tourist-place');
