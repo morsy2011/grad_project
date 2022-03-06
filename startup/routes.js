@@ -8,6 +8,10 @@ const hotels = require('../routes/hotel');
 const touristPlaces = require('../routes/tourist-place')
 const users = require('../routes/user');
 const auth = require('../routes/auth');
+const city = require("../routes/city");
+const resturant = require('../routes/resurant');
+const cafe = require('../routes/cafe')
+
 
 module.exports = function(app){
   app.use(express.json());
@@ -18,6 +22,9 @@ module.exports = function(app){
   app.use('/api/touristPlaces', touristPlaces);
   app.use('/api/user/register', users);
   app.use('/api/user/login', auth);
+  app.use("/api/city",city);
+  app.use("/api/resturant",resturant);
+  app.use('/api/cafe',cafe);
 
   if (app.get('env') === 'development') {
     app.use(logging);
