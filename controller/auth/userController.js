@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const _ = require('lodash');
+const _ = require('lodash');  
 const bcrypt = require('bcrypt');
-const { User, validateUser } = require('../models/user');
+const { User, validateUser } = require('../../models/user/user');
 
 exports.sinUp =  async (req, res, next) =>{
   const { error } = validateUser(req.body);

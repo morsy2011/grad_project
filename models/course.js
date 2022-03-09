@@ -13,6 +13,9 @@ const courseSchema = new mongoose.Schema({
     required: true,
     min: 20,
     max: 50
+  },
+  auth: {
+    type: String
   }
 });
 
@@ -22,7 +25,8 @@ function validateCourse(course){
 
   const schema = Joi.object({ 
       name: Joi.string().min(3).required(),
-      price:Joi.number().min(20).max(50).required()
+      price:Joi.number().min(20).max(50).required(),
+      auth: Joi.string()
   });
 
   return schema.validate(course);

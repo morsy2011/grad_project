@@ -3,7 +3,7 @@ const Joi = require('joi');
 const express = require('express');
 const mongoose = require('mongoose');
 const _ = require('lodash');
-const { User, validateAuth } = require('../models/user');
+const { User, validateAuth } = require('../../models/user/user');
 
 exports.login = async (req, res, next) => {
   const { error } = validateAuth(req.body); 

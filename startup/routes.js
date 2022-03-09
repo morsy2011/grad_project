@@ -6,11 +6,12 @@ const courses = require('../routes/course');
 const clubs = require('../routes/club');
 const hotels = require('../routes/hotel');
 const touristPlaces = require('../routes/tourist-place')
-const users = require('../routes/user');
-const auth = require('../routes/auth');
+const users = require('../routes/auth/user');
+const auth = require('../routes/auth/auth');
 const city = require("../routes/city");
 const resturant = require('../routes/resurant');
-const cafe = require('../routes/cafe')
+const cafe = require('../routes/cafe');
+const resetPassword = require('../routes/auth/resetPassword');
 
 
 module.exports = function(app){
@@ -25,6 +26,7 @@ module.exports = function(app){
   app.use("/api/city",city);
   app.use("/api/resturant",resturant);
   app.use('/api/cafe',cafe);
+  app.use("/api", resetPassword);
 
   if (app.get('env') === 'development') {
     app.use(logging);

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const clubController = require('../Controller/clubController');
+const clubController = require('../controller/clubController');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
