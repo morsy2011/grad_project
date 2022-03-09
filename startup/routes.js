@@ -22,6 +22,7 @@ module.exports = function(app){
   app.use('/api/hotels', hotels);
   app.use('/api/touristPlaces', touristPlaces);
   app.use('/api/user/register', users);
+  app.use('/api/user', users);
   app.use('/api/user/login', auth);
   app.use("/api/city",city);
   app.use("/api/resturant",resturant);
