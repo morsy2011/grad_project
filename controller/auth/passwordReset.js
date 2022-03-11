@@ -20,14 +20,19 @@ exports.forgotPassword = async (req, res, next) => {
     if (!token) {
       token = await new Token({
         userId: user._id,
-        token: crypto.randomBytes(32).toString("hex"),
+        token: crypto.randomInt(100000, 999999)
       }).save();
     }
 
-    const link = `${process.env.BASE_URL}/${user._id}/${token.token}`;
-    await sendEmail(user.email, "Password reset", link, user.name);
+    const code = token.token;
+    await sendEmail(
+      user.email,
+      "Password reset",
+      `This is Your private code to reset your password: ${code}`,
+      user.name
+      );
 
-    res.send("password reset link sent to your email account");
+    res.send("Verify code is sent to your email account");
   } catch (error) {
     console.log(error);
   }
@@ -35,20 +40,21 @@ exports.forgotPassword = async (req, res, next) => {
   next();
 };
 
-exports.resetPassword = async (req, res, next) => {
-  try {
-    const schema = Joi.object({ password: Joi.string().required() });
+exports.verifyCodeAndResetPass = async (req, res, next) => {
+  try{
+    const schema = Joi.object({ 
+      token : Joi.number().required(),
+      password: Joi.string().min(5).max(255).required() 
+    });
     const { error } = schema.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const user = await User.findById(req.params.userId);
-    if (!user) return res.status(400).send("invalid link or expired");
+    let token = await Token.findOne({token: req.body.token});
+    if(!token) return res.status(404).send('This code is not correct!..');
 
-    const token = await Token.findOne({
-      userId: user._id,
-      token: req.params.token,
-    });
-    if (!token) return res.status(400).send("Invalid link or expired");
+    const user = await User.findOne({_id: token.userId});
+    if (!user) return res.status(400).send("invalid expired");
+
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(req.body.password, salt);
@@ -56,10 +62,38 @@ exports.resetPassword = async (req, res, next) => {
     await token.delete();
 
     res.send("password reset successfully.");
-  } catch (error) {
+
+  } catch(error){
     res.send("An error occured");
     console.log(error);
   }
+}
 
-  next();
-};
+// exports.resetPassword = async (req, res, next) => {
+//   try {
+//     const schema = Joi.object({ password: Joi.string().required() });
+//     const { error } = schema.validate(req.body);
+//     if (error) return res.status(400).send(error.details[0].message);
+
+//     const user = await User.findById(req.params.userId);
+//     if (!user) return res.status(400).send("invalid link or expired");
+
+//     const token = await Token.findOne({
+//       userId: user._id,
+//       token: req.params.token,
+//     });
+//     if (!token) return res.status(400).send("Invalid link or expired");
+
+//     const salt = await bcrypt.genSalt(10);
+//     user.password = await bcrypt.hash(req.body.password, salt);
+//     await user.save();
+//     await token.delete();
+
+//     res.send("password reset successfully.");
+//   } catch (error) {
+//     res.send("An error occured");
+//     console.log(error);
+//   }
+
+//   next();
+// };
