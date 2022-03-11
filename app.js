@@ -1,5 +1,0 @@
-const crypto = require("crypto");
-
-let num = crypto.randomInt(100000, 999999);
-
-console.log(num);
