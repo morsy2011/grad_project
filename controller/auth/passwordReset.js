@@ -12,7 +12,7 @@ exports.forgotPassword = async (req, res, next) => {
     const { error } = schema.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ "local.email": req.body.email });
     if (!user)
       return res.status(400).send("user with given email doesn't exist");
 
@@ -26,10 +26,10 @@ exports.forgotPassword = async (req, res, next) => {
 
     const code = token.token;
     await sendEmail(
-      user.email,
+      user.local.email,
       "Password reset",
       `This is Your private code to reset your password: ${code}`,
-      user.name
+      user.local.name
       );
 
     res.send("Verify code is sent to your email account");
@@ -57,7 +57,7 @@ exports.verifyCodeAndResetPass = async (req, res, next) => {
 
 
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(req.body.password, salt);
+    user.local.password = await bcrypt.hash(req.body.password, salt);
     await user.save();
     await token.delete();
 

@@ -9,13 +9,14 @@ const resturantSchema= mongoose.Schema({
     workTime:String,
     cuisineType:String,
     pic:String,
-    menue:String,
+    menu:String,
     lat:Number,
     lng:Number,
     city:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'City'
-    }
+        ref: 'City' 
+        
+    },
 });
 
 const Resturant = mongoose.model('Resturant', resturantSchema);

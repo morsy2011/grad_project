@@ -3,15 +3,27 @@ const _ = require('lodash');
 
 exports.getRest = async function (req, res, next) {
 
+    // || req.query.cuisineType
+    // ,cuisineType: req.query.cuisineType
 let filter = {};
-if(req.query.rate || req.query.cuisineType){
-    filter= {rate: req.query.rate ,cuisineType: req.query.cuisineType};
+if(req.query.rate){
+    filter = {rate: req.query.rate };
+}
+if(req.query.cuisineType){
+    filter.cuisineType = {$regex: req.query.cuisineType};
 }
 
 const rest = await Resturant.find(filter).populate('city','name -_id');
 res.send(rest);
 next();
-}
+};
+
+exports.getRestByCityId = async function (req, res, next) {
+  
+  const rest = await Resturant.find({city:req.params.cityId}).select('-city');
+  res.send(rest);
+  next();
+};
 
 exports.getRestById = async function (req, res, next) {
 const rest = await Resturant.findById(req.params.id).populate('city','name -_id');
@@ -25,7 +37,7 @@ exports.postRest= async function(req,res,next){
     if(error) return res.status(400).send(error.details[0].message);
     let rest = await Resturant.findOne({name: req.body.name , lat:req.body.lat,lng:req.body.lng});
     if(rest) return res.status(400).send('this resturant is already here');
-    rest = new Resturant(_.pick(req.body,['name','address','pic','menue','rate','workTime','cuisineType','city','lat','lng']));
+    rest = new Resturant(_.pick(req.body,['name','address','pic','menu','rate','workTime','cuisineType','city','lat','lng']));
     rest = await rest.save();
     res.send(rest);
     next();
@@ -45,7 +57,7 @@ exports.putRest= async function(req,res,next){
             workTime:req.body.workTime,
             cuisineType:req.body.cuisineType,
             pic:req.body.pic,
-            menue:req.body.menue,
+            menu:req.body.menu,
             lat:req.body.lat,
             lng:req.body.lng,
             city:req.body.city
