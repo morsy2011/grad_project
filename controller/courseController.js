@@ -35,16 +35,16 @@ exports.updateCourse = async (req, res, next) => {
   next();
 };
 
-exports.deleteCourse = async (req, res, next) => {
-  const course = await Course
-  .findOneAndRemove({auth: req.header('x-auth-token')})
-  .select('-auth');
+// exports.deleteCourse = async (req, res, next) => {
+//   const course = await Course
+//   .findOneAndRemove({auth: req.header('x-auth-token')})
+//   .select('-auth');
 
-  if (!course)
-    return res.status(404).send("This course is not found");
-  res.send(course);
-  next();
-};
+//   if (!course)
+//     return res.status(404).send("This course is not found");
+//   res.send(course);
+//   next();
+// };
 
 exports.getUserCourse = async (req, res, next) => {
   const course = await Course
