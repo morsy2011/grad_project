@@ -2,7 +2,6 @@ const Joi = require("joi");
 const { Course, validate } = require("../models/course");
 const _ = require('lodash');
 const express = require("express");
-const mongoose = require("mongoose");
 
 exports.createCourse = async (req, res, next) => {
   const { error } = validate(req.body);
