@@ -4,12 +4,11 @@ const Joi = require('joi');
 
 cafeSchema= mongoose.Schema({
     name:String,
-    addres:String,
+    address:String,
     rate:String,
-    workeTime:String,
-    cuisineType:String,
-    pic:String,
-    menue:String,
+    workTime:String,
+    pic:[String],
+    menu:[String],
     lat:Number,
     lng:Number,
     city:{
@@ -26,8 +25,9 @@ function validateCafe(cafe){
         name:Joi.string().min(3).max(100).required(),
         address:Joi.string().min(3).required(),
         rate:Joi.required(),
+        pic:Joi.required(),
+        menu:Joi.required(),
         workTime:Joi.string().min(7).max(10).required(),
-        cuisineType:Joi.string().required(),
         lat:Joi.number().required(),
         lng:Joi.number().required(),
         city:Joi.required()

@@ -5,8 +5,8 @@ exports.creatCafe=async function (req,res,next){
     const{error}= validateCafe(req.body);
     if(error) return res.status(400).send(error.details[0].message);
     let cafe = await Cafe.findOne({name: req.body.name});//,lng:req.boody.lng,lat:req.body.lat
-    if(cafe) return res.status(400).send("this cafe allredy in data base");
-    cafe = await new Cafe(_.pick(req.body,['name','address','pic','menue','rate','workTime','city','cuisineType','lat','lng']));
+    if(cafe) return res.status(400).send("this cafe already in data base");
+    cafe = await new Cafe(_.pick(req.body,['name','address','pic','menu','rate','workTime','city','cuisineType','lat','lng']));
     cafe = await cafe.save();
     res.send(cafe);
     next(); 
@@ -30,7 +30,7 @@ exports.getCafeById= async function(req,res,next){
     next();
 }
 
-exports.updateCafe= async function(req,res,next){
+exports.updateCafe= async function(req,res){
     let cafe= await Cafe.findById(req.params.id);
     if(!cafe)return res.status(404).send('not found check your id ');
     
@@ -45,7 +45,7 @@ exports.updateCafe= async function(req,res,next){
             cuisineType:req.body.cuisineType,
             workTime:req.body.workTime,
             pic:req.body.pic,
-            menue:req.body.menue,
+            menu:req.body.menu,
             lat:req.body.lat,
             lng:req.body.lng,
             city:req.body.city
@@ -57,7 +57,7 @@ exports.updateCafe= async function(req,res,next){
 }
 
 
-exports.deletCafe = async function(req,res,next){
+exports.deleteCafe = async function(req,res,next){
     const cafe = await Cafe.findByIdAndRemove(req.params.id);
     if(!cafe) return res.status(404).send('not found check id');
     res.send(cafe);

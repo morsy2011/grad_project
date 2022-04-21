@@ -17,7 +17,7 @@ const schema = mongoose.Schema({
 const City = mongoose.model('City', schema);
 
 
-function validatecity(city) {
+function validateCity(city) {
     const schema = Joi.object({
         name:Joi.string().min(3).max(100).required(),
         population:Joi.string().min(1).required(),
@@ -32,4 +32,4 @@ function validatecity(city) {
 
 
 exports.City = City;
-exports.validatecity = validatecity;
+exports.validateCity = validateCity;

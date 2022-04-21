@@ -9,8 +9,10 @@ const touristPlaces = require('../routes/tourist-place')
 const users = require('../routes/auth/user');
 const auth = require('../routes/auth/auth');
 const city = require("../routes/city");
-const resturant = require('../routes/resurant');
+const restaurant = require('../routes/restaurant');
 const cafe = require('../routes/cafe');
+const train=require('../routes/train');
+const bus=require('../routes/bus');
 const resetPassword = require('../routes/auth/resetPassword');
 const like = require('../routes/like');
 
@@ -26,7 +28,9 @@ module.exports = function(app){
   app.use('/api/users', users);
   app.use('/api/user/login', auth);
   app.use("/api/city",city);
-  app.use("/api/resturant",resturant);
+  app.use("/api/restaurant",restaurant);
+  app.use("/api/train",train);
+  app.use("/api/bus",bus);
   app.use('/api/cafe',cafe);
   app.use("/api", resetPassword);
   app.use("/api/likes", like);

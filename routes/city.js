@@ -5,6 +5,6 @@ router.get('/',city.getCity);
 router.get('/:id',city.getCityById);
 router.post('/',city.creatCity);
 router.put('/:id',city.editCity);
-router.delete('/:id',city.deletCity);
+router.delete('/:id',city.deleteCity);
 module.exports=router;
 

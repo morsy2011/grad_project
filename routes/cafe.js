@@ -6,6 +6,6 @@ router.get('/',cafe.getCafe);
 router.get('/:id',cafe.getCafeById);
 router.post('/',cafe.creatCafe);
 router.put('/:id',cafe.updateCafe);
-router.delete('/:id',cafe.deletCafe);
+router.delete('/:id',cafe.deleteCafe);
 
 module.exports=router;

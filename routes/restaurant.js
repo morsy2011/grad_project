@@ -1,4 +1,4 @@
-const rest = require('../controller/resturant');
+const rest = require('../controller/restaurant');
 const express= require('express');
 const router=express.Router();
 router.get('/',rest.getRest);
