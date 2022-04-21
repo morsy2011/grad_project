@@ -4,9 +4,11 @@ const hotelController = require('../controller/hotelController');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
-router.post('/add_hotel', auth, hotelController.addHotel);
-router.put('/edit_hotel/:id', auth, hotelController.editHotel);
-router.delete('/delete_hotel/:id', [auth, admin], hotelController.deleteHotel);
-router.get('/show_all_hotels', hotelController.showAllHotels);
+router.get('/getHotels', hotelController.showAllHotels);
+router.get('/getHotelById/:id',hotelController.getHotelById);
+router.get('/city/:cityId',hotelController.getHotelByCityId);
+router.post('/addHotel', hotelController.addHotel);
+router.put('/editHotel/:id', auth, hotelController.editHotel);
+router.delete('/deleteHotel/:id', [auth, admin], hotelController.deleteHotel);
 
 module.exports = router;

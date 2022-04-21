@@ -4,9 +4,11 @@ const clubController = require('../controller/clubController');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
-router.post('/add_club', auth, clubController.addClub);
-router.put('/edit_club/:id', auth, clubController.editClub);
-router.delete('/delete_club/:id', [auth, admin], clubController.deleteClub);
-router.get('/show_all_clubs', clubController.showAllClubs);
+router.get('/getClubs', clubController.showAllClubs);
+router.get('/getClubById/:id',clubController.getClubById);
+router.get('/city/:cityId',clubController.getClubByCityId);
+router.post('/addClub', clubController.addClub);
+router.put('/editClub/:id', auth, clubController.editClub);
+router.delete('/deleteClub/:id', [auth, admin], clubController.deleteClub);
 
 module.exports = router;

@@ -4,7 +4,7 @@ const _ = require('lodash');
 exports.creatCafe=async function (req,res,next){
     const{error}= validateCafe(req.body);
     if(error) return res.status(400).send(error.details[0].message);
-    let cafe = await Cafe.findOne({name: req.body.name});//,lng:req.boody.lng,lat:req.body.lat
+    let cafe = await Cafe.findOne({name: req.body.name});//,lng:req.body.lng,lat:req.body.lat
     if(cafe) return res.status(400).send("this cafe already in data base");
     cafe = await new Cafe(_.pick(req.body,['name','address','pic','menu','rate','workTime','city','cuisineType','lat','lng']));
     cafe = await cafe.save();
@@ -26,6 +26,13 @@ exports.getCafe= async function(req,res,next){
 exports.getCafeById= async function(req,res,next){
     const cafe = await Cafe.findById(req.params.id).populate('city','name -_id');
     if(!cafe) return res.status(404).send('Not found check your id ');
+    res.send(cafe);
+    next();
+}
+
+exports.getCafeByCityId = async function (req, res, next) {
+    const cafe = await Cafe.find({ city: req.params.cityId }).select('-city');
+    if (!cafe) return res.status(404).send('Not found check your id ');
     res.send(cafe);
     next();
 }

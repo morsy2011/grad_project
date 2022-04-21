@@ -4,7 +4,7 @@ const _ = require('lodash');
 exports.creatTrain=async function (req,res,next){
     const{error}= validateTrain(req.body);
     if(error) return res.status(400).send(error.details[0].message);
-    let train = await Train.findOne({name: req.body.name});//,lng:req.boody.lng,lat:req.body.lat
+    let train = await Train.findOne({name: req.body.name});//,lng:req.body.lng,lat:req.body.lat
     if(train) return res.status(400).send("this cafe already in data base");
     train = await new Train(_.pick(req.body,['name','address','pic','rate','workTime','city','lat','lng']));
     train = await train.save();
@@ -28,7 +28,14 @@ exports.getTrainById= async function(req,res,next){
     if(!train) return res.status(404).send('Not found check your id ');
     res.send(train);
     next();
-}
+};
+
+exports.getTrainByCityId = async function (req, res, next) {
+    const train = await Train.find({ city: req.params.cityId }).select('-city');
+    if (!train) return res.status(404).send('Not found check your id ');
+    res.send(train);
+    next();
+  };
 
 exports.updateTrain= async function(req,res,next){
     let train= await Train.findById(req.params.id);

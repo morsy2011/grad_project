@@ -4,9 +4,11 @@ const touristController = require('../controller/touristController');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
-router.post('/add_tourist_place', auth, touristController.addTourist);
-router.put('/edit_tourist_place/:id', auth, touristController.editTourist);
-router.delete('/delete_tourist_place/:id', [auth, admin], touristController.deleteTourist);
-router.get('/show_all_tourist_places', touristController.showAllTourists);
+router.get('/getTouristPlaces', touristController.showAllTourists);
+router.get('/getTouristPlaceById/:id',touristController.getTouristById);
+router.get('/city/:cityId',touristController.getTouristByCityId);
+router.post('/addTouristPlace', touristController.addTourist);
+router.put('/editTouristPlace/:id', auth, touristController.editTourist);
+router.delete('/deleteTouristPlace/:id', [auth, admin], touristController.deleteTourist);
 
 module.exports = router;

@@ -1,8 +1,8 @@
 const rest = require('../controller/restaurant');
 const express= require('express');
 const router=express.Router();
-router.get('/',rest.getRest);
-router.get('/:id',rest.getRestById);
+router.get('/getRestaurants',rest.getRest);
+router.get('/getRestaurantById/:id',rest.getRestById);
 router.get('/city/:cityId',rest.getRestByCityId);
 router.post('/',rest.postRest);
 router.put('/:id',rest.putRest);

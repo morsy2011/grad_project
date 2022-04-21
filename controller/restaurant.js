@@ -16,25 +16,19 @@ res.send(rest);
 next();
 };
 
-exports.getRestByCityId = async function (req, res, next) {
-  const rest = await Resturant.find({ city: req.params.cityId }).select("-city");
+exports.getRestById = async function (req, res, next) {
+  const rest = await Restaurant.findById(req.params.id).populate("city","name -_id");
+  if (!rest) return res.status(404).send("Not found check your id ");
   res.send(rest);
   next();
 };
-  
 
-exports.getRestById = async function (req, res, next) {
-const rest = await Restaurant.findById(req.params.id).populate('city','name -_id');
-if(!rest) return res.status(404).send('Not found check your id ');
-res.send(rest);
-next();
-}
 exports.getRestByCityId = async function (req, res, next) {
     const rest = await Restaurant.find({city:req.params.cityId}).select('-city');
     if(!rest) return res.status(404).send('Not found check your id ');
     res.send(rest);
     next();
-    }
+}
     
 
 exports.postRest= async function(req,res,next){
@@ -42,7 +36,8 @@ exports.postRest= async function(req,res,next){
     if(error) return res.status(400).send(error.details[0].message);
     let rest = await Restaurant.findOne({name: req.body.name , lat:req.body.lat,lng:req.body.lng});
     if(rest) return res.status(400).send('this restaurant is already here');
-    rest = new Restaurant(_.pick(req.body,['name','address','pic','menu','rate','workTime','cuisineType','city','lat','lng']));
+    rest = new Restaurant(_.pick(req.body,
+        ['name','address','pic','menu','rate','workTime','cuisineType','city','lat','lng']));
     rest = await rest.save();
     res.send(rest);
     next();

@@ -30,6 +30,13 @@ exports.getBusById= async function(req,res,next){
     next();
 }
 
+exports.getBusByCityId = async function (req, res, next) {
+    const bus = await Bus.find({ city: req.params.cityId }).select('-city');
+    if (!bus) return res.status(404).send('Not found check your id ');
+    res.send(bus);
+    next();
+}
+
 exports.updateBus= async function(req,res,next){
     let bus= await Bus.findById(req.params.id);
     if(!bus)return res.status(404).send('not found check your id ');
