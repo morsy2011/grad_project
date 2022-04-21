@@ -1,4 +1,4 @@
-const train = require('../Controller/train')
+const train = require('../controller/train')
 const express = require('express');
 const router = express.Router();
 
