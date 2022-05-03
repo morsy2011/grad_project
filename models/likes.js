@@ -5,7 +5,7 @@ const likeSchema = new Schema({
   userId: String,
   like: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Restaurant'
+    ref: 'City'
   }
 })
 
