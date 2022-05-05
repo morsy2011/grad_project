@@ -47,6 +47,7 @@ exports.deleteCourse = async (req, res, next) => {
 };
 
 
+
 exports.getUserCourse = async (req, res, next) => {
   const course = await Course
   .find({auth: req.header('x-auth-token')})
