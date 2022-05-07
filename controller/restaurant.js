@@ -16,6 +16,9 @@ res.send(rest);
 next();
 };
 
+
+    
+
 exports.getRestById = async function (req, res, next) {
   const rest = await Restaurant.findById(req.params.id).populate("city","name -_id");
   if (!rest) return res.status(404).send("Not found check your id ");

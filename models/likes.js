@@ -5,9 +5,8 @@ const likeSchema = new Schema({
   userId: String,
   like: {
     type: mongoose.Schema.Types.ObjectId,
-  }
 },
-{
+
   toJSON: { virtuals: true }
 }); 
 

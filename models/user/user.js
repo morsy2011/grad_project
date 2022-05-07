@@ -28,7 +28,7 @@ const userSchema =  new Schema({
     },
     token:{
       type: String
-    },
+    },   
     isAdmin: Boolean
   },
   google: {
@@ -61,6 +61,7 @@ const userSchema =  new Schema({
       type: String
     }
   },
+
   
 });
 
