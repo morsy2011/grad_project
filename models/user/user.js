@@ -1,10 +1,9 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const userSchema =  new Schema({
+const userSchema = new Schema({
   methods: {
     type: [String],
     enum: ['local', 'google', 'facebook'],
@@ -25,6 +24,9 @@ const userSchema =  new Schema({
       type: String,
       minLength: 5,
       maxLength: 1024
+    },
+    phone: {
+      type: String,
     },
     token:{
       type: String
@@ -61,7 +63,6 @@ const userSchema =  new Schema({
       type: String
     }
   },
-
   
 });
 
@@ -70,12 +71,13 @@ userSchema.methods.generateAuthToken = function(){
   return token;
 }
 
-const User = mongoose.model('User',userSchema);
+const User = mongoose.model('User', userSchema);
 
 function validateUser(user){
   const schema = Joi.object({
     name: Joi.string().min(5).max(50).required(),
     email: Joi.string().min(5).max(255).required().email(),
+    phone: Joi.number(),
     password: Joi.string().min(5).max(255).required(),
     isAdmin: Joi.boolean()
   }); 

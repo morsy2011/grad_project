@@ -20,6 +20,7 @@ exports.register =  async (req, res, next) =>{
     local: {
       name: req.body.name,
       email: req.body.email,
+      phone: req.body.phone,
       password: req.body.password
     }
   });
@@ -31,13 +32,15 @@ exports.register =  async (req, res, next) =>{
   const token = user.generateAuthToken();
   user.local.token = token;
   await user.save();
-  userBack = {
+  const userBack = {
     "id": user.id,
     "name": user.local.name,
     "email": user.local.email,
+    "phone": user.local.phone,
     "token": user.local.token
   }
   res.status(200).header('x-auth-token', token).json({
+    "status": true,
     "message": "Registration done successfully",
     "data": userBack
   });
