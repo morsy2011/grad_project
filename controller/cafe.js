@@ -18,15 +18,28 @@ exports.getCafe= async function(req,res,next){
     if(req.query.rate){
         filter = {rate: req.query.rate };
     }
-    const cafe = await Cafe.find(filter).populate('city','name -_id')
-    res.send(cafe);
+    const cafe = await Cafe.find(filter).populate('city','name -_id');
+    let cafeBack = [{
+        "id": cafe.id,
+        "name": cafe.name,
+        // "city": cafe.city.name
+        
+    }];
+    res.send(cafeBack);
     next();
 }
 
 exports.getCafeById= async function(req,res,next){
     const cafe = await Cafe.findById(req.params.id).populate('city','name -_id');
     if(!cafe) return res.status(404).send('Not found check your id ');
-    res.send(cafe);
+    let cafeBack = {
+        "id": cafe.id,
+        "name": cafe.name,
+        "city": cafe.city.name
+        
+    };
+    res.send(cafeBack);
+    // res.send(cafe);
     next();
 }
 
