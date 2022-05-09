@@ -19,21 +19,33 @@ exports.getBus= async function(req,res,next){
         filter = {rate: req.query.rate };
     }
     const bus = await Bus.find(filter).populate('city','name -_id')
-    res.send(bus);
+    res.status(200).json({
+        "status": true,
+        "message": "success",
+        "data": bus
+    });
     next();
 }
 
 exports.getBusById= async function(req,res,next){
     const bus = await Bus.findById(req.params.id).populate('city','name -_id');
     if(!bus) return res.status(404).send('Not found check your id ');
-    res.send(bus);
+    res.status(200).json({
+        "status": true,
+        "message": "success",
+        "data": bus
+    });
     next();
 }
 
 exports.getBusByCityId = async function (req, res, next) {
     const bus = await Bus.find({ city: req.params.cityId }).select('-city');
     if (!bus) return res.status(404).send('Not found check your id ');
-    res.send(bus);
+    res.status(200).json({
+        "status": true,
+        "message": "success",
+        "data": bus
+    });
     next();
 }
 

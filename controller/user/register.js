@@ -4,7 +4,7 @@ const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const { User, validateUser } = require('../../models/user/user');
 
-exports.sinUp =  async (req, res, next) =>{
+exports.register =  async (req, res, next) =>{
   const { error } = validateUser(req.body);
   if(error) return res.status(200).json({
     "status": false,
@@ -20,6 +20,7 @@ exports.sinUp =  async (req, res, next) =>{
     local: {
       name: req.body.name,
       email: req.body.email,
+      phone: req.body.phone,
       password: req.body.password
     }
   });
@@ -31,13 +32,15 @@ exports.sinUp =  async (req, res, next) =>{
   const token = user.generateAuthToken();
   user.local.token = token;
   await user.save();
-  userBack = {
+  const userBack = {
     "id": user.id,
     "name": user.local.name,
     "email": user.local.email,
+    "phone": user.local.phone,
     "token": user.local.token
   }
   res.status(200).header('x-auth-token', token).json({
+    "status": true,
     "message": "Registration done successfully",
     "data": userBack
   });
@@ -45,24 +48,7 @@ exports.sinUp =  async (req, res, next) =>{
   next();
 };
 
-exports.googleAuth = async (req, res, next) => {
-  const user = await User.findOne(req.params.user)
-  console.log('user', user);
-  const token = user.generateAuthToken();
-  user.google.token = token;
-  await user.save();
-  userBack = {
-    "id": user.id,
-    "name": user.google.name,
-    "email": user.google.email,
-    "token": user.google.token
-  }
-  res.status(200).header('x-auth-token', token).json({
-    "message": "SignIn with google done successfully",
-    "data": userBack
-  });
-  next();
-}
+
 
 
 

@@ -15,7 +15,7 @@ exports.getTrend = async function (req, res, next) {
      const TouristPlace = await Tourist.find({ rate: 5 }).populate('city', 'name -_id');
      const club = await Club.find({ rate: 5 }).populate('city', 'name -_id');
      //const city= await City.find()
-     let home = {
+     let home = [
           Restaurants,
           Cafes,
           BusStation,
@@ -23,8 +23,20 @@ exports.getTrend = async function (req, res, next) {
           Hotels,
           TouristPlace,
           club
-     }
-     res.send(home);
+     ]
+     res.status(200).json({
+          "status": true,
+          "message": "success",
+          "data": [
+               Restaurants,
+               Cafes,
+               BusStation,
+               TrainStation,
+               Hotels,
+               TouristPlace,
+               club
+          ]
+     });
      next();
 };
 

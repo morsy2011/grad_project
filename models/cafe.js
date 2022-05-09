@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Joi = require('joi');
 
 
-cafeSchema= mongoose.Schema({
+const cafeSchema = mongoose.Schema({
     name:String,
     address:String,
     rate:String,
@@ -16,6 +16,14 @@ cafeSchema= mongoose.Schema({
         ref: 'City'
     }
 })
+
+cafeSchema.set('toJSON', {
+    transform: function (doc, ret, options) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+    }
+});
 
 const Cafe = mongoose.model('Cafes',cafeSchema);
 

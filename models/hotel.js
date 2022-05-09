@@ -41,6 +41,14 @@ const hotelSchema = new mongoose.Schema({
   }
 });
 
+hotelSchema.set('toJSON', {
+  transform: function (doc, ret, options) {
+      ret.id = ret._id;
+      delete ret._id;
+      delete ret.__v;
+  }
+});
+
 const Hotel = mongoose.model('Hotel', hotelSchema);
 
 function validateHotel(hotel){

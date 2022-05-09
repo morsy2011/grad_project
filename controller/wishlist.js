@@ -38,7 +38,7 @@ exports.addCafeToWishlist = async (req, res, next) => {
         .status(200)
         .json({
             status: 'success',
-            message: 'restaurant added successfully',
+            message: 'cafe added successfully',
             data: wishlist
         });
 
@@ -59,7 +59,7 @@ exports.addHotelToWishlist = async (req, res, next) => {
         .status(200)
         .json({
             status: 'success',
-            message: 'restaurant added successfully',
+            message: 'hotel added successfully',
             data: wishlist
         });
 
@@ -81,7 +81,7 @@ exports.addTouristPlaceToWishlist = async (req, res, next) => {
         .status(200)
         .json({
             status: 'success',
-            message: 'restaurant added successfully',
+            message: 'tourist place added successfully',
             data: wishlist
         });
 
@@ -102,7 +102,7 @@ exports.addTrainToWishlist = async (req, res, next) => {
         .status(200)
         .json({
             status: 'success',
-            message: 'restaurant added successfully',
+            message: 'train station added successfully',
             data: wishlist
         });
 
@@ -123,7 +123,7 @@ exports.addClubToWishlist = async (req, res, next) => {
         .status(200)
         .json({
             status: 'success',
-            message: 'restaurant added successfully',
+            message: 'club added successfully',
             data: wishlist
         });
 
@@ -147,7 +147,7 @@ exports.addCityToWishlist = async (req, res, next) => {
         .status(200)
         .json({
             status: 'success',
-            message: 'restaurant added successfully',
+            message: 'city added successfully',
             data: wishlist
         });
 
@@ -170,7 +170,7 @@ exports.addBusToWishlist = async (req, res, next) => {
         .status(200)
         .json({
             status: 'success',
-            message: 'restaurant added successfully',
+            message: 'bus station added successfully',
             data: wishlist
         });
 
@@ -184,10 +184,14 @@ exports.getWishlist = async (req, res, next) => {
         .populate('Restaurants')
         .populate('Cafes')
         .populate('Hotels');
-    res.json({
-        data: list
-    });
-}
+    res
+        .status(200)
+        .json({
+            status: 'success',
+            message: 'success',
+            data: list
+        });
+    }
 
 
 exports.deleteFromWishlist= async (req,res,next)=>{

@@ -19,6 +19,14 @@ const restaurantSchema= mongoose.Schema({
     }
 });
 
+restaurantSchema.set('toJSON', {
+    transform: function (doc, ret, options) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+    }
+  });
+
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
 function validateRestaurant(restaurant){
