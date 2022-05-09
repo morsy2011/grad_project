@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const { User, validateUser } = require('../../models/user/user');
 
 exports.googleAuth = async (req, res, next) => {
-  const user = await User.findOne(req.params.user)
+  const user = await User.findOne(req.user)
   console.log('user', user);
   const token = user.generateAuthToken();
   user.google.token = token;

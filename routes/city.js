@@ -7,5 +7,6 @@ router.post('/',city.creatCity);
 router.put('/:id',city.editCity);
 router.delete('/:id',city.deleteCity);
 router.post('/:cityId',city.addComment);
+router.get('/comments/:cityId',city.getCityComments);
 module.exports=router;
 
