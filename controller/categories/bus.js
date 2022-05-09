@@ -1,4 +1,5 @@
-const {Bus , validateBus}= require('../models/bus');
+const {Bus , validateBus}= require('../../models/categories/bus');
+const {User}= require('../../models/user/user');
 const _ = require('lodash');
 
 exports.creatBus=async function (req,res,next){
@@ -18,7 +19,7 @@ exports.getBus= async function(req,res,next){
     if(req.query.rate){
         filter = {rate: req.query.rate };
     }
-    const bus = await Bus.find(filter).populate('city','name -_id')
+    const bus = await Bus.find(filter).populate('city','name -_id').select("-comment");
     res.status(200).json({
         "status": true,
         "message": "success",
@@ -28,7 +29,7 @@ exports.getBus= async function(req,res,next){
 }
 
 exports.getBusById= async function(req,res,next){
-    const bus = await Bus.findById(req.params.id).populate('city','name -_id');
+    const bus = await Bus.findById(req.params.id).populate('city','name -_id').select("-comment");
     if(!bus) return res.status(404).send('Not found check your id ');
     res.status(200).json({
         "status": true,
@@ -39,7 +40,7 @@ exports.getBusById= async function(req,res,next){
 }
 
 exports.getBusByCityId = async function (req, res, next) {
-    const bus = await Bus.find({ city: req.params.cityId }).select('-city');
+    const bus = await Bus.find({ city: req.params.cityId }).select('-city -comment');
     if (!bus) return res.status(404).send('Not found check your id ');
     res.status(200).json({
         "status": true,
@@ -78,4 +79,40 @@ exports.deleteBus = async function(req,res,next){
     if(!bus) return res.status(404).send('not found check id');
     res.send(bus);
     next();
+}
+
+exports.addComment = async (req,res, next) => {
+    const bus = await Bus.findById(req.params.busId);
+    const user = await User.findOne({_id:req.body.id});
+
+    console.log(user);
+    let  userName = function(){
+        let localName = user.local.name;
+        if (localName == null) return user.google.name;
+        else return localName
+    }
+    
+    let comment = bus.comment;
+    comment.push({
+        "name": userName(),
+        "text": req.body.text
+    })
+
+    await bus.save();
+    // res.send(comment);
+
+    res.status(200).json({
+        "status": true,
+        "message": "Your comment in sent successfully",
+        "data": comment
+    });
+}
+
+exports.getBusComments = async (req, res, next) => {
+    const bus = await Bus.findById(req.params.busId);
+    res.status(200).json({
+        "status": true,
+        "message": "success",
+        "data": bus.comment
+    });
 }

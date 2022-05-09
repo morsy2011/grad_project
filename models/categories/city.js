@@ -11,7 +11,7 @@ const schema = mongoose.Schema({
     pic: String,
     lng: Number,
     lat: Number,
-    comment: [Object]
+    comment : [Object]
 });
 
 schema.set('toJSON', {
@@ -20,8 +20,7 @@ schema.set('toJSON', {
         delete ret._id;
         delete ret.__v;
     }
-}); 
-
+  });
 
 const City = mongoose.model('City', schema);
 

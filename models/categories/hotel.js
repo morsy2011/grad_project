@@ -1,24 +1,25 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-const touristPlaceSchema = new mongoose.Schema({
+const hotelSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     maxLength: 50
   },
-  description:{
-    type: String
-  },
   address: {
     type: String,
     required: true,
   },
-  workTime: {
+  roomsNumbers: {
+    type: Number,
+    required: true
+  },
+  singlePrice: {
     type: String,
     required: true
   },
-  price: {
+  doublePrice: {
     type: String,
     required: true
   },
@@ -33,6 +34,7 @@ const touristPlaceSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  comment : [Object],
   city: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'city',
@@ -40,7 +42,7 @@ const touristPlaceSchema = new mongoose.Schema({
   }
 });
 
-touristPlaceSchema.set('toJSON', {
+hotelSchema.set('toJSON', {
   transform: function (doc, ret, options) {
       ret.id = ret._id;
       delete ret._id;
@@ -48,25 +50,25 @@ touristPlaceSchema.set('toJSON', {
   }
 });
 
-const Tourist = mongoose.model('Tourist', touristPlaceSchema);
+const Hotel = mongoose.model('Hotel', hotelSchema);
 
-function validateTourist(tourist){
+function validateHotel(hotel){
 
   const schema = Joi.object({ 
       name: Joi.string().max(50).required(),
       address: Joi.string().required(),
-      description: Joi.string(),
-      workTime: Joi.string().required(),
-      price: Joi.string().required(),
+      roomsNumbers: Joi.number().required(),
+      singlePrice: Joi.string().required(),
+      doublePrice: Joi.string().required(),
       picture: Joi.string(),
-      lng: Joi.number().required(),
       lat: Joi.number().required(),
+      lng: Joi.number().required(),
       city:Joi.objectId().min(20).max(50).required()
   });
 
-  return schema.validate(tourist);
+  return schema.validate(hotel);
 }
 
-exports.touristPlaceSchema = touristPlaceSchema;
-exports.Tourist = Tourist;
-exports.validate = validateTourist;
+exports.hotelSchema = hotelSchema;
+exports.Hotel = Hotel;
+exports.validate = validateHotel;

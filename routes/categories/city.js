@@ -1,4 +1,4 @@
-const city = require('../controller/city');
+const city = require('../../controller/categories/city');
 const express= require('express');
 const router=express.Router();
 router.get('/getCities',city.getCity);

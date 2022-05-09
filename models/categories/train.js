@@ -4,11 +4,12 @@ const Joi = require('joi');
 const trainStation= mongoose.Schema({
     name:String,
     address:String,
-    rate:String,//احتمال نحتاجها
-    price:String,//احتمال نحتاجها
+    rate:Number,
+    price:String,
     pic:String,
     lat:Number,
     lng:Number,
+    comment : [Object],
     city:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'City'

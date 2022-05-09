@@ -1,4 +1,5 @@
-const { Restaurant,validateRestaurant} =require('../models/restaurant');
+const { Restaurant,validateRestaurant} =require('../../models/categories/restaurant');
+const {User}= require('../../models/user/user');
 const _ = require('lodash');
 
 exports.getRest = async function (req, res, next) {
@@ -11,7 +12,7 @@ exports.getRest = async function (req, res, next) {
         filter.cuisineType = { $regex: req.query.cuisineType };
     }
 
-    const rest = await Restaurant.find(filter).populate('city', 'name -_id');
+    const rest = await Restaurant.find(filter).populate('city', 'name -_id').select("-comment");
      res.status(200).json({
           "status": true,
           "message": "success",
@@ -21,7 +22,7 @@ exports.getRest = async function (req, res, next) {
 };
 
 exports.getRestById = async function (req, res, next) {
-  const rest = await Restaurant.findById(req.params.id).populate("city","name -_id");
+  const rest = await Restaurant.findById(req.params.id).populate("city","name -_id").select("-comment");
   if (!rest) return res.status(404).send("Not found check your id ");
    res.status(200).json({
           "status": true,
@@ -32,7 +33,7 @@ exports.getRestById = async function (req, res, next) {
 };
 
 exports.getRestByCityId = async function (req, res, next) {
-    const rest = await Restaurant.find({city:req.params.cityId}).select('-city');
+    const rest = await Restaurant.find({city:req.params.cityId}).select('-city -comment');
     if(!rest) return res.status(404).send('Not found check your id ');
      res.status(200).json({
           "status": true,
@@ -88,3 +89,39 @@ exports.deleteRest= async function (req,res,next){
     res.send(rest);
     next();
 }
+
+exports.addComment = async (req,res, next) => {
+    const restaurant = await Restaurant.findById(req.params.restaurantId);
+    const user = await User.findOne({_id:req.body.id});
+  
+    console.log(user);
+    let  userName = function(){
+        let localName = user.local.name;
+        if (localName == null) return user.google.name;
+        else return localName
+    }
+    
+    let comment = restaurant.comment;
+    comment.push({
+        "name": userName(),
+        "text": req.body.text
+    })
+  
+    await restaurant.save();
+    // res.send(comment);
+  
+    res.status(200).json({
+        "status": true,
+        "message": "Your comment in sent successfully",
+        "data": comment
+    });
+  }
+  
+  exports.getRestaurantComments = async (req, res, next) => {
+    const restaurant = await Restaurant.findById(req.params.restaurantId);
+    res.status(200).json({
+        "status": true,
+        "message": "success",
+        "data": restaurant.comment
+    });
+  }

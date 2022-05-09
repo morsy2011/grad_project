@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
-const { Train } = require('./train');
-const { City } = require('./city');
 
 const WishListSchema = mongoose.Schema({
 

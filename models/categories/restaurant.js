@@ -1,33 +1,35 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
+const mongoose=  require('mongoose');
+const Joi= require('joi');
 
 
-const cafeSchema = mongoose.Schema({
+const restaurantSchema= mongoose.Schema({
     name:String,
     address:String,
     rate:String,
     workTime:String,
+    cuisineType:String,
     pic:[String],
     menu:[String],
     lat:Number,
     lng:Number,
+    comment : [Object],
     city:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'City'
     }
-})
+});
 
-cafeSchema.set('toJSON', {
+restaurantSchema.set('toJSON', {
     transform: function (doc, ret, options) {
         ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
     }
-});
+  });
 
-const Cafe = mongoose.model('Cafes',cafeSchema);
+const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
-function validateCafe(cafe){
+function validateRestaurant(restaurant){
 
     const schema= Joi.object({
         name:Joi.string().min(3).max(100).required(),
@@ -35,14 +37,15 @@ function validateCafe(cafe){
         rate:Joi.required(),
         pic:Joi.required(),
         menu:Joi.required(),
+        cuisineType:Joi.string().required(),
         workTime:Joi.string().min(7).max(10).required(),
         lat:Joi.number().required(),
         lng:Joi.number().required(),
         city:Joi.required()
     });
 
-    return schema.validate(cafe);
+    return schema.validate(restaurant);
 }
 
-module.exports.Cafe=Cafe;
-module.exports.validateCafe=validateCafe;
+exports.Restaurant=Restaurant;
+exports.validateRestaurant=validateRestaurant;

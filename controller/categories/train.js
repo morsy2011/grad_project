@@ -1,4 +1,5 @@
-const {Train, validateTrain}= require('../models/train');
+const {Train, validateTrain}= require('../../models/categories/train');
+const {User}= require('../../models/user/user');
 const _ = require('lodash');
 
 exports.creatTrain=async function (req,res,next){
@@ -18,7 +19,7 @@ exports.getTrain= async function(req,res,next){
     if(req.query.rate){
         filter = {rate: req.query.rate };
     }
-    const train = await Train.find(filter).populate('city','name -_id')
+    const train = await Train.find(filter).populate('city','name -_id').select("-comment");
     res.status(200).json({
     "status": true,
     "message": "success",
@@ -28,7 +29,7 @@ exports.getTrain= async function(req,res,next){
 }
 
 exports.getTrainById= async function(req,res,next){
-    const train = await Train.findById(req.params.id).populate('city','name -_id');
+    const train = await Train.findById(req.params.id).populate('city','name -_id').select("-comment");
     if(!train) return res.status(404).send('Not found check your id ');
     res.status(200).json({
     "status": true,
@@ -39,7 +40,7 @@ exports.getTrainById= async function(req,res,next){
 };
 
 exports.getTrainByCityId = async function (req, res, next) {
-    const train = await Train.find({ city: req.params.cityId }).select('-city');
+    const train = await Train.find({ city: req.params.cityId }).select('-city -comment');
     if (!train) return res.status(404).send('Not found check your id ');
     res.status(200).json({
     "status": true,
@@ -79,3 +80,39 @@ exports.deleteTrain = async function(req,res,next){
     res.send(train);
     next();
 }
+
+exports.addComment = async (req,res, next) => {
+    const train = await Train.findById(req.params.trainId);
+    const user = await User.findOne({_id:req.body.id});
+  
+    console.log(user);
+    let  userName = function(){
+        let localName = user.local.name;
+        if (localName == null) return user.google.name;
+        else return localName
+    }
+    
+    let comment = train.comment;
+    comment.push({
+        "name": userName(),
+        "text": req.body.text
+    })
+  
+    await train.save();
+    // res.send(comment);
+  
+    res.status(200).json({
+        "status": true,
+        "message": "Your comment in sent successfully",
+        "data": comment
+    });
+  }
+  
+  exports.getTrainComments = async (req, res, next) => {
+    const train = await Train.findById(req.params.trainId);
+    res.status(200).json({
+        "status": true,
+        "message": "success",
+        "data": train.comment
+    });
+  }

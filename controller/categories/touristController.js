@@ -2,10 +2,11 @@ const Joi = require("joi");
 const express = require('express');
 const _ = require('lodash');
 const mongoose = require('mongoose');
-const { Tourist, validate } = require('../models/tourist-place');
+const { Tourist, validate } = require('../../models/categories/tourist-place');
+const {User}= require('../../models/user/user');
 
 exports.showAllTourists = async (req, res, next) => {
-  const tourist = await Tourist.find().sort('name');
+  const tourist = await Tourist.find().sort('name').select("-comment");
   res.status(200).json({
     "status": true,
     "message": "success",
@@ -15,7 +16,7 @@ exports.showAllTourists = async (req, res, next) => {
 };
 
 exports.getTouristById = async function (req, res, next) {
-  const tourist = await Tourist.findById(req.params.id).populate("city","name -_id");
+  const tourist = await Tourist.findById(req.params.id).populate("city","name -_id").select("-comment");
   if (!tourist) return res.status(404).send("Not found check your id ");
   res.status(200).json({
     "status": true,
@@ -26,7 +27,7 @@ exports.getTouristById = async function (req, res, next) {
 };
 
 exports.getTouristByCityId = async function (req, res, next) {
-  const tourist = await Tourist.find({ city: req.params.cityId }).select('-city');
+  const tourist = await Tourist.find({ city: req.params.cityId }).select('-city -comment');
   if (!tourist) return res.status(404).send('Not found check your id ');
   res.status(200).json({
     "status": true,
@@ -77,4 +78,38 @@ exports.deleteTourist = async (req, res, next) => {
   next();
 };
 
+exports.addComment = async (req,res, next) => {
+  const tourist = await Tourist.findById(req.params.touristId);
+  const user = await User.findOne({_id:req.body.id});
 
+  console.log(user);
+  let  userName = function(){
+      let localName = user.local.name;
+      if (localName == null) return user.google.name;
+      else return localName
+  }
+  
+  let comment = tourist.comment;
+  comment.push({
+      "name": userName(),
+      "text": req.body.text
+  })
+
+  await tourist.save();
+  // res.send(comment);
+
+  res.status(200).json({
+      "status": true,
+      "message": "Your comment in sent successfully",
+      "data": comment
+  });
+}
+
+exports.getTouristComments = async (req, res, next) => {
+  const tourist = await Tourist.findById(req.params.touristId);
+  res.status(200).json({
+      "status": true,
+      "message": "success",
+      "data": tourist.comment
+  });
+}

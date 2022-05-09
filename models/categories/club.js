@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-const hotelSchema = new mongoose.Schema({
+const clubSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -11,15 +11,11 @@ const hotelSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  roomsNumbers: {
-    type: Number,
-    required: true
-  },
-  singlePrice: {
+  workTime: {
     type: String,
     required: true
   },
-  doublePrice: {
+  price: {
     type: String,
     required: true
   },
@@ -34,6 +30,7 @@ const hotelSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  comment : [Object],
   city: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'city',
@@ -41,7 +38,7 @@ const hotelSchema = new mongoose.Schema({
   }
 });
 
-hotelSchema.set('toJSON', {
+clubSchema.set('toJSON', {
   transform: function (doc, ret, options) {
       ret.id = ret._id;
       delete ret._id;
@@ -49,25 +46,24 @@ hotelSchema.set('toJSON', {
   }
 });
 
-const Hotel = mongoose.model('Hotel', hotelSchema);
+const Club = mongoose.model('Club', clubSchema);
 
-function validateHotel(hotel){
+function validateClub(club){
 
   const schema = Joi.object({ 
       name: Joi.string().max(50).required(),
       address: Joi.string().required(),
-      roomsNumbers: Joi.number().required(),
-      singlePrice: Joi.string().required(),
-      doublePrice: Joi.string().required(),
+      workTime: Joi.string().required(),
+      price: Joi.string().required(),
       picture: Joi.string(),
-      lat: Joi.number().required(),
       lng: Joi.number().required(),
+      lat: Joi.number().required(),
       city:Joi.objectId().min(20).max(50).required()
   });
 
-  return schema.validate(hotel);
+  return schema.validate(club);
 }
 
-exports.hotelSchema = hotelSchema;
-exports.Hotel = Hotel;
-exports.validate = validateHotel;
+exports.clubSchema = clubSchema;
+exports.Club = Club;
+exports.validate = validateClub;

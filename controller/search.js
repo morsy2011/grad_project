@@ -1,11 +1,11 @@
-const { Restaurant } = require('../models/restaurant');
-const { Cafe } = require('../models/cafe');
-const { Bus } = require('../models/bus');
-const { City } = require('../models/city');
-const { Club } = require('../models/club');
-const { Hotel } = require('../models/hotel');
-const { Tourist } = require('../models/tourist-place');
-const { Train } = require('../models/train');
+const { Restaurant } = require('../models/categories/restaurant');
+const { Cafe } = require('../models/categories/cafe');
+const { Bus } = require('../models/categories/bus');
+const { City } = require('../models/categories/city');
+const { Club } = require('../models/categories/club');
+const { Hotel } = require('../models/categories/hotel');
+const { Tourist } = require('../models/categories/tourist-place');
+const { Train } = require('../models/categories/train');
 
 
 exports.search = async function (req, res, next) {
@@ -25,13 +25,13 @@ exports.search = async function (req, res, next) {
     }
 
 if(filter.name || filter.cuisineType || filter.rate){
-    const Restaurants = await Restaurant.find(filter).populate('city', 'name -_id');  
-    const Cafes = await Cafe.find(filter).populate('city', 'name -_id');
-    const BusStation = await Bus.find(filter).populate('city', 'name -_id');
-    const TrainStation = await Train.find(filter).populate('city', 'name -_id');
-    const Hotels = await Hotel.find(filter).populate('city', 'name -_id');
-    const TouristPlace = await Tourist.find(filter).populate('city', 'name -_id');
-    const club = await Club.find(filter).populate('city', 'name -_id');
+    const Restaurants = await Restaurant.find(filter).populate('city', 'name -_id').select("-comment");  
+    const Cafes = await Cafe.find(filter).populate('city', 'name -_id').select("-comment");
+    const BusStation = await Bus.find(filter).populate('city', 'name -_id').select("-comment");
+    const TrainStation = await Train.find(filter).populate('city', 'name -_id').select("-comment");
+    const Hotels = await Hotel.find(filter).populate('city', 'name -_id').select("-comment");
+    const TouristPlace = await Tourist.find(filter).populate('city', 'name -_id').select("-comment");
+    const club = await Club.find(filter).populate('city', 'name -_id').select("-comment");
 
     let result = [
         Restaurants,

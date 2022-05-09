@@ -1,5 +1,5 @@
-const {City, validateCity} = require('../models/city');
-const {User} = require('../models/user/user');
+const {City, validateCity} = require('../../models/categories/city');
+const { User } = require('../../models/user/user');
 const _ = require('lodash');
 
 exports.creatCity = async function (req, res, next) {
@@ -19,15 +19,6 @@ exports.creatCity = async function (req, res, next) {
 
 exports.getCity = async function (req, res, next) {
     const city = await City.find().sort('name').select("-comment");
-    let cityBack = {
-        id: city.id,
-        name: city.name,
-        population: city.population,
-        area: city.area,
-        lng: city.lng,
-        lat: city.lat,
-        aboutTheCity: city.aboutTheCity,
-    }
     res.status(200).json({
     "status": true,
     "message": "success",
@@ -37,13 +28,13 @@ exports.getCity = async function (req, res, next) {
 }
 
 exports.getCityById = async function (req, res, next) {
-    const city = await City.findById(req.params.id).select('-__v');
+    const city = await City.findById(req.params.id).select("-comment");
     if (!city) return res.status(404).send("Not fond check your Id");
     res.status(200).json({
-        "status": true,
-        "message": "success",
-        "data": city
-    });
+    "status": true,
+    "message": "success",
+    "data": city
+  });
     next();
 }
 

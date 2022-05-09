@@ -7,15 +7,14 @@ const login = require('../routes/user/login');
 const forgotPassword = require('../routes/user/forgotPassword');
 const resetPassword = require('../routes/user/resetPassword');
 const profile = require('../routes/profile');
-const courses = require('../routes/course');
-const clubs = require('../routes/club');
-const hotels = require('../routes/hotel');
-const touristPlaces = require('../routes/tourist-place')
-const city = require("../routes/city");
-const restaurant = require('../routes/restaurant');
-const cafe = require('../routes/cafe');
-const train=require('../routes/train');
-const bus=require('../routes/bus');
+const clubs = require('../routes/categories/club');
+const hotels = require('../routes/categories/hotel');
+const touristPlaces = require('../routes/categories/tourist-place')
+const city = require("../routes/categories/city");
+const restaurant = require('../routes/categories/restaurant');
+const cafe = require('../routes/categories/cafe');
+const train=require('../routes/categories/train');
+const bus=require('../routes/categories/bus');
 const like = require('../routes/like');
 const wishlist= require('../routes/wishlist');
 const home = require('../routes/home');
@@ -24,7 +23,6 @@ const search = require('../routes/search');
 module.exports = function(app){
   app.use(express.json());
   app.use(helmet());
-  app.use('/api/courses', courses);
   app.use('/api/user', register);
   app.use('/api/user/register', register);
   app.use('/api/user/login', login);

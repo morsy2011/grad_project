@@ -15,7 +15,7 @@ exports.addRestaurantToWishlist = async (req, res, next) => {
     res
         .status(200)
         .json({
-            status: 'success',
+            status: true,
             message: 'restaurant added successfully',
             data: wishlist
         });
@@ -37,7 +37,7 @@ exports.addCafeToWishlist = async (req, res, next) => {
     res
         .status(200)
         .json({
-            status: 'success',
+            status: true,
             message: 'cafe added successfully',
             data: wishlist
         });
@@ -58,7 +58,7 @@ exports.addHotelToWishlist = async (req, res, next) => {
     res
         .status(200)
         .json({
-            status: 'success',
+            status: true,
             message: 'hotel added successfully',
             data: wishlist
         });
@@ -80,7 +80,7 @@ exports.addTouristPlaceToWishlist = async (req, res, next) => {
     res
         .status(200)
         .json({
-            status: 'success',
+            status: true,
             message: 'tourist place added successfully',
             data: wishlist
         });
@@ -101,7 +101,7 @@ exports.addTrainToWishlist = async (req, res, next) => {
     res
         .status(200)
         .json({
-            status: 'success',
+            status: true,
             message: 'train station added successfully',
             data: wishlist
         });
@@ -122,7 +122,7 @@ exports.addClubToWishlist = async (req, res, next) => {
     res
         .status(200)
         .json({
-            status: 'success',
+            status: true,
             message: 'club added successfully',
             data: wishlist
         });
@@ -146,7 +146,7 @@ exports.addCityToWishlist = async (req, res, next) => {
     res
         .status(200)
         .json({
-            status: 'success',
+            status: true,
             message: 'city added successfully',
             data: wishlist
         });
@@ -169,7 +169,7 @@ exports.addBusToWishlist = async (req, res, next) => {
     res
         .status(200)
         .json({
-            status: 'success',
+            status: true,
             message: 'bus station added successfully',
             data: wishlist
         });
@@ -187,8 +187,8 @@ exports.getWishlist = async (req, res, next) => {
     res
         .status(200)
         .json({
-            status: 'success',
-            message: 'success',
+            status: true,
+            message: "success",
             data: list
         });
     }
@@ -197,5 +197,11 @@ exports.getWishlist = async (req, res, next) => {
 exports.deleteFromWishlist= async (req,res,next)=>{
     let items = await WishList.findOneAndDelete({ _id:req.body.id });
     if (!items) return res.status(400).send('This item is already not  in your wishlist');   
-    res.send('item removed')
+    res
+        .status(200)
+        .json({
+            status: true,
+            message: 'item is deleted',
+            data: null
+    });
 }

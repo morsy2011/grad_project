@@ -2,10 +2,11 @@ const Joi = require("joi");
 const express = require('express');
 const _ = require('lodash');
 const mongoose = require('mongoose');
-const { Hotel, validate } = require('../models/hotel');
+const { Hotel, validate } = require('../../models/categories/hotel');
+const {User}= require('../../models/user/user');
 
 exports.showAllHotels = async (req, res, next) => {
-  const hotel = await Hotel.find().sort('name');
+  const hotel = await Hotel.find().sort('name').select("-comment");
   res.status(200).json({
     "status": true,
     "message": "success",
@@ -15,7 +16,7 @@ exports.showAllHotels = async (req, res, next) => {
 };
 
 exports.getHotelById = async function (req, res, next) {
-  const hotel = await Hotel.findById(req.params.id).populate("city","name -_id");
+  const hotel = await Hotel.findById(req.params.id).populate("city","name -_id").select("-comment");
   if (!hotel) return res.status(404).send("Not found check your id ");
   res.status(200).json({
     "status": true,
@@ -26,7 +27,7 @@ exports.getHotelById = async function (req, res, next) {
 };
 
 exports.getHotelByCityId = async function (req, res, next) {
-  const hotel = await Hotel.find({ city: req.params.cityId }).select('-city');
+  const hotel = await Hotel.find({ city: req.params.cityId }).select('-city -comment');
   if (!hotel) return res.status(404).send('Not found check your id ');
   res.status(200).json({
     "status": true,
@@ -77,3 +78,38 @@ exports.deleteHotel = async (req, res, next) => {
   next();
 };
 
+exports.addComment = async (req,res, next) => {
+  const hotel = await Hotel.findById(req.params.hotelId);
+  const user = await User.findOne({_id:req.body.id});
+
+  console.log(user);
+  let  userName = function(){
+      let localName = user.local.name;
+      if (localName == null) return user.google.name;
+      else return localName
+  }
+  
+  let comment = hotel.comment;
+  comment.push({
+      "name": userName(),
+      "text": req.body.text
+  })
+
+  await hotel.save();
+  // res.send(comment);
+
+  res.status(200).json({
+      "status": true,
+      "message": "Your comment in sent successfully",
+      "data": comment
+  });
+}
+
+exports.getHotelComments = async (req, res, next) => {
+  const hotel = await Hotel.findById(req.params.hotelId);
+  res.status(200).json({
+      "status": true,
+      "message": "success",
+      "data": hotel.comment
+  });
+}
