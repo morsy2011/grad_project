@@ -6,7 +6,6 @@ const { Club } = require('../models/club');
 const { Hotel } = require('../models/hotel');
 const { Tourist } = require('../models/tourist-place');
 const { Train } = require('../models/train');
-const { forEach } = require('lodash');
 
 
 exports.search = async function (req, res, next) {
@@ -15,7 +14,7 @@ exports.search = async function (req, res, next) {
 
     if (req.query.name) {
         filter.name = { $regex: req.query.name };
-    }
+     }
     if (req.query.cuisineType) {
         filter.cuisineType = { $regex: req.query.cuisineType };
     }
@@ -25,8 +24,8 @@ exports.search = async function (req, res, next) {
         filter.rate = { $regex: req.query.rate };
     }
 
-
-    const Restaurants = await Restaurant.find(filter).populate('city', 'name -_id');
+if(filter.name || filter.cuisineType || filter.rate){
+    const Restaurants = await Restaurant.find(filter).populate('city', 'name -_id');  
     const Cafes = await Cafe.find(filter).populate('city', 'name -_id');
     const BusStation = await Bus.find(filter).populate('city', 'name -_id');
     const TrainStation = await Train.find(filter).populate('city', 'name -_id');
@@ -50,10 +49,12 @@ exports.search = async function (req, res, next) {
         }
      
        return res.json({
-        
-        data:   result
+        "status": true,
+        "message": "success",
+        "data":   result
         });
     }
-
+}
+else return res.send('enter search item')
     next();
 };
