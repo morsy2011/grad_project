@@ -19,21 +19,33 @@ exports.getTrain= async function(req,res,next){
         filter = {rate: req.query.rate };
     }
     const train = await Train.find(filter).populate('city','name -_id')
-    res.send(train);
+    res.status(200).json({
+    "status": true,
+    "message": "success",
+    "data": train
+  });
     next();
 }
 
 exports.getTrainById= async function(req,res,next){
     const train = await Train.findById(req.params.id).populate('city','name -_id');
     if(!train) return res.status(404).send('Not found check your id ');
-    res.send(train);
+    res.status(200).json({
+    "status": true,
+    "message": "success",
+    "data": train
+  });
     next();
 };
 
 exports.getTrainByCityId = async function (req, res, next) {
     const train = await Train.find({ city: req.params.cityId }).select('-city');
     if (!train) return res.status(404).send('Not found check your id ');
-    res.send(train);
+    res.status(200).json({
+    "status": true,
+    "message": "success",
+    "data": train
+  });
     next();
   };
 

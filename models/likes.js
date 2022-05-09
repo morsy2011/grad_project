@@ -3,12 +3,8 @@ const Schema = mongoose.Schema;
 
 const likeSchema = new Schema({
   userId: String,
-  like: {
-    type: mongoose.Schema.Types.ObjectId,
-  }, 
-},
-{
-  toJSON: { virtuals: true }
+  like:  mongoose.Schema.Types.ObjectId,
+  
 }); 
 
 likeSchema.virtual('city', {
@@ -32,7 +28,15 @@ likeSchema.virtual('cafe', {
   justOne: true
 });
 
-
+likeSchema.set('toJSON', {
+  virtuals: true,
+  transform: function (doc, ret, options) {
+      ret.id = ret._id;
+      delete ret._id;
+      delete ret.__v;
+      
+  }
+});
 
 
 const Like = mongoose.model('Like', likeSchema);

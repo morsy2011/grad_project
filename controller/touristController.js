@@ -6,21 +6,33 @@ const { Tourist, validate } = require('../models/tourist-place');
 
 exports.showAllTourists = async (req, res, next) => {
   const tourist = await Tourist.find().sort('name');
-  res.send(tourist);
+  res.status(200).json({
+    "status": true,
+    "message": "success",
+    "data": tourist
+  });
   next();
 };
 
 exports.getTouristById = async function (req, res, next) {
   const tourist = await Tourist.findById(req.params.id).populate("city","name -_id");
   if (!tourist) return res.status(404).send("Not found check your id ");
-  res.send(tourist);
+  res.status(200).json({
+    "status": true,
+    "message": "success",
+    "data": tourist
+  });
   next();
 };
 
 exports.getTouristByCityId = async function (req, res, next) {
   const tourist = await Tourist.find({ city: req.params.cityId }).select('-city');
   if (!tourist) return res.status(404).send('Not found check your id ');
-  res.send(tourist);
+  res.status(200).json({
+    "status": true,
+    "message": "success",
+    "data": tourist
+  });
   next();
 };
 

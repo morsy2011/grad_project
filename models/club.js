@@ -37,6 +37,14 @@ const clubSchema = new mongoose.Schema({
   }
 });
 
+clubSchema.set('toJSON', {
+  transform: function (doc, ret, options) {
+      ret.id = ret._id;
+      delete ret._id;
+      delete ret.__v;
+  }
+});
+
 const Club = mongoose.model('Club', clubSchema);
 
 function validateClub(club){

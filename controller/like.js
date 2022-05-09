@@ -16,10 +16,10 @@ exports.addLike = async (req, res, next) => {
 
 exports.getLikes = async (req, res, next) => {
   let like = await Like.find({userId : req.params.userId})
-  .populate('city', 'name -_id')
-  .populate('restaurant', 'name -_id')
-  .populate('cafe', 'name -_id')
-  .select('-userId -__v');
+  .populate('city', 'name area -_id')
+  .populate('restaurant', 'name pic rate -_id')
+  .populate('cafe', 'name pic rate -_id')
+  .select('-userId');
 
   res.send(like);
   next();

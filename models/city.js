@@ -10,8 +10,17 @@ const schema = mongoose.Schema({
     aboutTheCity:String,
     pic: String,
     lng: Number,
-    lat: Number
+    lat: Number,
+    comment: [Object]
 });
+
+schema.set('toJSON', {
+    transform: function (doc, ret, options) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+    }
+}); 
 
 
 const City = mongoose.model('City', schema);

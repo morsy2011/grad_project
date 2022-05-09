@@ -1,4 +1,5 @@
 const {City, validateCity} = require('../models/city');
+const {User} = require('../models/user/user');
 const _ = require('lodash');
 
 exports.creatCity = async function (req, res, next) {
@@ -18,14 +19,31 @@ exports.creatCity = async function (req, res, next) {
 
 exports.getCity = async function (req, res, next) {
     const city = await City.find().sort('name');
-    res.send(city);
+    let cityBack = {
+        id: city.id,
+        name: city.name,
+        population: city.population,
+        area: city.area,
+        lng: city.lng,
+        lat: city.lat,
+        aboutTheCity: city.aboutTheCity,
+    }
+    res.status(200).json({
+    "status": true,
+    "message": "success",
+    "data": city
+  });
     next();
 }
 
 exports.getCityById = async function (req, res, next) {
-    const city = await City.findById(req.params.id);
+    const city = await City.findById(req.params.id).select('-__v');
     if (!city) return res.status(404).send("Not fond check your Id");
-    res.send(city);
+    res.status(200).json({
+        "status": true,
+        "message": "success",
+        "data": city
+    });
     next();
 }
 
@@ -57,4 +75,26 @@ exports.deleteCity=async function(req,res,next){
     res.send(city);
 
     next();
+}
+
+exports.addComment = async (req,res, next) => {
+    const city = await City.findById(req.params.cityId);
+    const user = await User.findOne({"local._id":req.body.userId});
+
+    console.log(user);
+
+    let comment = city.comment;
+    comment.push({
+        "name": user.local.name,
+        "text": req.body.text
+    })
+
+    await city.save();
+    // res.send(comment);
+
+    res.status(200).json({
+        "status": true,
+        "message": "Your comment in sent successfully",
+        "data": comment
+    });
 }
