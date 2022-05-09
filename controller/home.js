@@ -27,15 +27,8 @@ exports.getTrend = async function (req, res, next) {
      res.status(200).json({
           "status": true,
           "message": "success",
-          "data": [
-               Restaurants,
-               Cafes,
-               BusStation,
-               TrainStation,
-               Hotels,
-               TouristPlace,
-               club
-          ]
+          "data": home
+           
      });
      next();
 };
