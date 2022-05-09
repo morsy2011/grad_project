@@ -190,3 +190,8 @@ exports.getWishlist = async (req, res, next) => {
 }
 
 
+exports.deleteFromWishlist= async (req,res,next)=>{
+    let items = await WishList.findOneAndDelete({ _id:req.body.id });
+    if (!items) return res.status(400).send('This item is already not  in your wishlist');   
+    res.send('item removed')
+}

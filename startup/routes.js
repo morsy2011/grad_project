@@ -17,6 +17,7 @@ const bus=require('../routes/bus');
 const like = require('../routes/like');
 const wishlist= require('../routes/wishlist');
 const home = require('../routes/home');
+const search = require('../routes/search');
 
 module.exports = function(app){
   app.use(express.json());
@@ -37,6 +38,7 @@ module.exports = function(app){
   app.use("/api/likes", like);
   app.use("/api/user",wishlist);
   app.use("/api/home",home);
+  app.use("/api/search",search);
 
   if (app.get('env') === 'development') {
     app.use(logging);

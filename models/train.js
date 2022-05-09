@@ -4,7 +4,7 @@ const Joi = require('joi');
 const trainStation= mongoose.Schema({
     name:String,
     address:String,
-    rate:Number,//احتمال نحتاجها
+    rate:String,//احتمال نحتاجها
     price:String,//احتمال نحتاجها
     pic:String,
     lat:Number,

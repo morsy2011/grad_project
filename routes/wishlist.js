@@ -11,6 +11,7 @@ route.post('/:id/Hotel',wishlist.addHotelToWishlist);
 route.post('/:id/TouristPlace',wishlist.addTouristPlaceToWishlist); 
 route.post('/:id/Train',wishlist.addTrainToWishlist); 
 
+route.delete('/WishList',wishlist.deleteFromWishlist); 
 
 route.get('/:id/wishlist',wishlist.getWishlist); 
 

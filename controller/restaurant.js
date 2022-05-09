@@ -11,6 +11,10 @@ if(req.query.cuisineType){
     filter.cuisineType = {$regex: req.query.cuisineType};
 }
 
+if (req.query.name) {
+    filter.name = { $regex: req.query.name };
+}
+
 const rest = await Restaurant.find(filter).populate('city','name -_id');
 res.send(rest);
 next();
