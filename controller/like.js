@@ -20,7 +20,7 @@ exports.getLikes = async (req, res, next) => {
   .populate('restaurant', 'name pic rate -_id')
   .populate('cafe', 'name pic rate -_id')
   .select('-userId');
-
+  
   res.send(like);
   next();
 };

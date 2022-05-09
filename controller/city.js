@@ -18,7 +18,7 @@ exports.creatCity = async function (req, res, next) {
 }
 
 exports.getCity = async function (req, res, next) {
-    const city = await City.find().sort('name');
+    const city = await City.find().sort('name').select("-comment");
     let cityBack = {
         id: city.id,
         name: city.name,
@@ -79,13 +79,18 @@ exports.deleteCity=async function(req,res,next){
 
 exports.addComment = async (req,res, next) => {
     const city = await City.findById(req.params.cityId);
-    const user = await User.findOne({"local._id":req.body.userId});
+    const user = await User.findOne({_id:req.body.id});
 
     console.log(user);
-
+    let  userName = function(){
+        let localName = user.local.name;
+        if (localName == null) return user.google.name;
+        else return localName
+    }
+    
     let comment = city.comment;
     comment.push({
-        "name": user.local.name,
+        "name": userName(),
         "text": req.body.text
     })
 
@@ -96,5 +101,14 @@ exports.addComment = async (req,res, next) => {
         "status": true,
         "message": "Your comment in sent successfully",
         "data": comment
+    });
+}
+
+exports.getCityComments = async (req, res, next) => {
+    const city = await City.findById(req.params.cityId);
+    res.status(200).json({
+        "status": true,
+        "message": "success",
+        "data": city.comment
     });
 }
